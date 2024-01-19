@@ -10,6 +10,7 @@ const passport = require('passport');
 const flash = require('express-flash');
 const session = require('express-session');
 const {getUserByUsername, getUserById} = require('./util/db_funcs');
+const {checkIfAuthenticated, checkIfNotAuthenticated} = require('./util/helper_funcs');
 
 initializePassport(passport, getUserByUsername, getUserById);
 
@@ -27,20 +28,21 @@ app.use(express.json());
 app.use(cors());
 
 
-app.get('/', (req, res) => {
+app.get('/', checkIfAuthenticated, (req, res) => {
     res.status(200).send({ message: `Logged In as ${req.user.username}` });
 });
 
-app.post('/signup', controller.addUser);
+app.post('/signup', checkIfNotAuthenticated, controller.addUser);
 
-app.post('/login', passport.authenticate('local', {
+app.post('/login', checkIfNotAuthenticated, passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
 }));
 
-app.post('/logout', (req, res) => {
-
+app.post('/logout', checkIfAuthenticated, (req, res) => {
+    req.logOut();
+    res.redirect('/login');
 });
 
 

@@ -1,5 +1,5 @@
 const { use } = require('passport');
-const {compare_password} = require('./util/pass_helper_funcs');
+const {compare_password} = require('./util/helper_funcs');
 const LocalStrategy = require('passport-local').Strategy;
 
 function initialize (passport, getUserByUsername, getUserById) {

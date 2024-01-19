@@ -1,6 +1,6 @@
 const db = require('../db/database');
 const queries = require('./queries');
-const {hash} = require('./pass_helper_funcs');
+const {hash} = require('./helper_funcs');
 
 const addUser = async (req, res) => {
     try {
