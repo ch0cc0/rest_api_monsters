@@ -12,6 +12,13 @@ const session = require('express-session');
 const {getUserByUsername, getUserById} = require('./util/db_funcs');
 const {checkIfAuthenticated, checkIfNotAuthenticated} = require('./util/helper_funcs');
 
+
+// Routers
+
+const minionsRouter = require('./minions/routes');
+
+// --------------------------------
+
 initializePassport(passport, getUserByUsername, getUserById);
 
 const app = express();
@@ -27,6 +34,7 @@ app.use(passport.session());
 app.use(express.json());
 app.use(cors());
 
+app.use('/minions', minionsRouter);
 
 app.get('/', checkIfAuthenticated, (req, res) => {
     res.status(200).send({ message: `Logged In as ${req.user.username}` });
