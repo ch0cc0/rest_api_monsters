@@ -1,6 +1,8 @@
 const db = require('../db/database');
 const queries = require('./queries');
 
+// users (same as dungeon master but used for login requests);
+
 const getUserByUsername = (username) => {
     return db.query(queries.findUserByUsername, [username])
         .then(result => {
@@ -30,6 +32,47 @@ const getUserById = (id) => {
             throw err;
         });
 };
+
+// Dungeon Master
+
+const getDungeonMasterById = (id) => {
+    return db.query(queries.getDungeonMasterById, [id])
+        .then(result => {
+            if (result.rows.length > 0) {
+                return result.rows[0];
+            } else {
+                return null;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            throw err;
+        });
+};
+
+const updateDungeonMasterMotivationById = (motivation, id) => {
+    return db.query(queries.updateDungeonMasterMotivationById, [motivation, id])
+        .then(result => {
+            return result.rowCount > 0;
+        })
+        .catch(err => {
+            console.error(err);
+            throw err;
+        });
+};
+
+const deleteDungeonMasterbyId = (id) => {
+    return db.query(queries.deleteDungeonMasterbyId, [id])
+        .then(result => {
+            return result.rowCount > 0;
+        })
+        .catch(err => {
+            console.error(err);
+            throw err;
+        });
+};
+
+// Minions
 
 const getAllMinions = () => {
     return db.query(queries.selectAllMinions)
@@ -110,9 +153,12 @@ const getMinionsByCost = (cost) => {
 module.exports = {
     getUserByUsername,
     getUserById,
+    getDungeonMasterById,
+    updateDungeonMasterMotivationById,
     getAllMinions,
     getMinionById,
     getMinionsByType,
     getMinionsByName,
-    getMinionsByCost
+    getMinionsByCost,
+    deleteDungeonMasterbyId
 }

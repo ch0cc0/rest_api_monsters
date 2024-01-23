@@ -15,7 +15,8 @@ const {checkIfAuthenticated, checkIfNotAuthenticated} = require('./util/helper_f
 
 // Routers
 
-const minionsRouter = require('./minions/routes');
+const dungeonMasterRouter = require('./routes/dungeon_master/routes');
+const minionsRouter = require('./routes/minions/routes');
 
 // --------------------------------
 
@@ -34,10 +35,11 @@ app.use(passport.session());
 app.use(express.json());
 app.use(cors());
 
+app.use('/dungeon-master', dungeonMasterRouter);
 app.use('/minions', minionsRouter);
 
 app.get('/', checkIfAuthenticated, (req, res) => {
-    res.status(200).send({ message: `Logged In as ${req.user.username}` });
+    res.status(200).send(req.user);
 });
 
 app.post('/signup', checkIfNotAuthenticated, controller.addUser);

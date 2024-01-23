@@ -7,7 +7,8 @@ const addUser = async (req, res) => {
         const username = req.body.username;
         const email = req.body.email;
         const hashedPassword = await hash(req.body.password, 10);
-        const result = await db.query(queries.addUser, [username, email, hashedPassword]);
+        const motivation = req.body.motivation;
+        const result = await db.query(queries.addUser, [username, email, hashedPassword, motivation]);
 
         res.status(201).json({ message: "User added successfully" });
     } catch (err) {
