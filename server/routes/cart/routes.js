@@ -29,9 +29,9 @@ router.post('/:cartId', async (req, res) => {
         const result = await db.addMinionToCart(id, minion_id, quantity);
 
         if (!result) {
-            res.status(500).send('Failed adding item to cart');
+            res.status(500).send('Failed adding minion to cart');
         } else {
-            res.status(201).send('Added item to cart');
+            res.status(201).send('Added minion to cart');
         }
         
     } catch (error) {

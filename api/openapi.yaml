@@ -1,0 +1,301 @@
+openapi: 3.0.3
+info:
+  title: Dungeon Store API
+  description: A basic API to buy minion and store them in dungeons.
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /signup:
+    summary: Register into database
+    description: This path is used to register a dungeon master into the local database
+    post:
+      tags:
+      - User
+      summary: Register
+      description: Register a dungeon master into the local database
+      operationId: signup
+      responses:
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: User
+  /login:
+    summary: Login into server
+    post:
+      tags:
+      - User
+      summary: Login to server
+      description: Path used to login to server. This is where user authentication
+        takes place.
+      operationId: login
+      responses:
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: User
+  /logout:
+    summary: Logout of the server
+    post:
+      tags:
+      - User
+      summary: Logout of server
+      description: This path logs the user out of the server
+      operationId: logout
+      responses:
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: User
+  /minions:
+    summary: Get minions.
+    description: This path is used to get all minions or specific minions depending
+      on the request body
+    get:
+      tags:
+      - Minions
+      summary: Get minions
+      description: This path gets all minions or specific ones based on the request
+      operationId: get_minions
+      responses:
+        "200":
+          description: Minions Info
+          content:
+            application/json:
+              examples:
+                minions:
+                  value: |-
+                    [
+                        {
+                            "id": 1,
+                            "name": "Green Slime",
+                            "type": "slime",
+                            "cost": "0.99"
+                        },
+                        {
+                            "id": 2,
+                            "name": "Red Dragon",
+                            "type": "dragon",
+                            "cost": "199.99"
+                        },
+                        {
+                            "id": 3,
+                            "name": "Goblin Warrior",
+                            "type": "goblin",
+                            "cost": "1.99"
+                        }
+                    ]
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: Minions
+  /minions/{minionId}:
+    summary: Get a minion
+    description: This path is used to get a specific minion using the id parameter
+    get:
+      tags:
+      - Minions
+      summary: Get a specific minion
+      description: This path gets a specific minion based on the minionId
+      operationId: get_minions_minion_id
+      parameters:
+      - name: minionId
+        in: path
+        description: The id of the minion.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: Minions
+  /dungeon-master/{id}:
+    summary: Get dungeon master
+    description: This path is used to get a dungeon master
+    get:
+      tags:
+      - Dungeon Master
+      summary: Get dungeon master
+      description: This path is used to get a dungeon master using id
+      operationId: Dungeon Master
+      parameters:
+      - name: id
+        in: path
+        description: The id of the dungeon master.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Dungeon Master Info
+          content:
+            application/json:
+              examples:
+                dungeon master:
+                  value: |-
+                    {
+                        "username": "cow",
+                        "email": "cow@com",
+                        "motivation": "Moo!"
+                    }
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: DungeonMaster
+    delete:
+      tags:
+      - Dungeon Master
+      summary: Delete a dungeon master
+      description: This path with the delete method is used to delete a dungeon master
+        from the database
+      operationId: delete_dungeon_master
+      parameters:
+      - name: id
+        in: path
+        description: The id of the dungeon master.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: DungeonMaster
+  /dungeon-master/{id}/motivation:
+    summary: Update motivation
+    description: This path updates the motivation of a specific dungeon master
+    put:
+      tags:
+      - Dungeon Master
+      summary: Update a dungeon master motivation
+      description: This path is used to update a dungeon master's motivation
+      operationId: put_dungeon_master_motivation
+      parameters:
+      - name: id
+        in: path
+        description: The id of the dungeon master.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: DungeonMaster
+  /dungeons:
+    summary: Get dungeons
+    description: This path gets the dungeons associated with the logged in dungeon
+      master
+    get:
+      tags:
+      - Dungeons
+      summary: Get the all dungeons
+      description: This path is used to get all the dungeons related to dungeon master
+        logged in
+      operationId: get_dungeons
+      responses:
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: Dungeons
+  /dungeons/{dungeonId}:
+    summary: Get specific dungeon
+    description: This path gets a specific dungeon using the dungeonId parameter
+    get:
+      tags:
+      - Dungeons
+      summary: Get a specific dungeon
+      description: This path is used to get details on a specific dungeon.
+      operationId: get_dungeons_dungeon_id
+      parameters:
+      - name: dungeonId
+        in: path
+        description: The id of the dungeon.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: Dungeons
+  /cart:
+    summary: Dungeon Masters cart
+    description: This path is the cart that the dungeon master adds minions to
+    post:
+      tags:
+      - Cart
+      summary: Create a cart
+      description: This path is used to create a cart
+      operationId: post_cart
+      responses:
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: Cart
+  /cart/{cartId}:
+    summary: Specific cart using cartId
+    description: This path is used for interacting with a specific cart using the
+      cartId
+    get:
+      tags:
+      - Cart
+      summary: Get cart
+      description: This path is used to get cart and it's minions
+      operationId: get_cart_cart_id
+      parameters:
+      - name: cartId
+        in: path
+        description: The id of the dungeon.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: Cart
+    post:
+      tags:
+      - Cart
+      summary: Add minion to cart
+      description: This path is used to add minions to the cart
+      operationId: post_cart_cart_id
+      parameters:
+      - name: cartId
+        in: path
+        description: The id of the dungeon.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: Cart
+  /cart/{cartId}/checkout:
+    summary: Checkout with the cart
+    description: This path checkouts and ands the cart contents to the dungeon
+    post:
+      tags:
+      - Cart
+      summary: Checkout the cart
+      description: This path is used to checkout the cart and add the minions to a
+        dungeon
+      operationId: post_checkout
+      parameters:
+      - name: cartId
+        in: path
+        description: The id of the dungeon.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        default:
+          description: Default error sample response
+      x-swagger-router-controller: Cart
+components: {}
